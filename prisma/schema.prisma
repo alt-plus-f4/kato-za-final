@@ -34,7 +34,7 @@ model Goal {
   name           String
   description    String?
   price          Float           @default(0)
-  picture        Bytes?
+  picture        String?
   piggyBankGoals PiggyBankGoal[]
 
   User      User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
