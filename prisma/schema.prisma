@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          Int    @id @unique @default(autoincrement())
+  username    String @unique
+  email       String
+  piggyBankId Int?   @unique
+  password    String
+
+  piggyBank PiggyBank? @relation(fields: [piggyBankId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Goal      Goal?
+}
+
+model PiggyBank {
+  id     Int   @id @unique @default(autoincrement())
+  money  Float @default(0)
+  goalId Int   @unique
+
+  goal          Goal            @relation(fields: [goalId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  User          User?
+  PiggyBankGoal PiggyBankGoal[]
+}
+
+model Goal {
+  id             Int             @id @unique @default(autoincrement())
+  userId         Int             @unique
+  name           String
+  description    String?
+  price          Float           @default(0)
+  picture        Bytes?
+  piggyBankGoals PiggyBankGoal[]
+
+  User      User?      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  PiggyBank PiggyBank?
+}
+
+model PiggyBankGoal {
+  id          Int @id @unique @default(autoincrement())
+  piggyBankId Int
+  goalId      Int
+
+  piggyBank PiggyBank @relation(fields: [piggyBankId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  goal      Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
+
+  @@unique([piggyBankId, goalId])
+}
