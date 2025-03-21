@@ -18,14 +18,12 @@ import { getAuthSession } from '@/lib/auth';
 export default async function SavingsTracker() {
 	const session = await getAuthSession();
 
-	console.log(JSON.stringify(session));
-
 	if (!session) {
 		redirect('/signin');
 	}
 
 	const piggybanks = await fetchUserPiggybanks(session.user.id);
-	const hasPiggyBank = piggybanks.length > 0;
+	const hasPiggyBank = piggybanks.piggyBank != null;
 
 	return (
 		<div className='container mx-auto px-4 py-8 max-w-3xl'>

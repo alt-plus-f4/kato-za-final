@@ -64,8 +64,8 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 
 		try {
 			setIsUpdatingFunds(true);
-			const response = await fetch('/api/piggybank/update', {
-				method: 'POST',
+			const response = await fetch('/api/piggybank', {
+				method: 'PATCH',
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -193,6 +193,8 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 									src={goal.picture}
 									alt={goal.name}
 									className='w-full h-full object-contain'
+									width={200}
+									height={200}
 								/>
 							) : (
 								<div className='w-full h-full flex items-center justify-center text-muted-foreground'>

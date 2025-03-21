@@ -21,8 +21,6 @@ export async function POST(request: Request) {
 			);
 		}
 
-		console.log('SESSION USER ID' + session.user.id);
-
 		const goal = await db.goal.create({
 			data: {
 				userId: session.user.id || '',

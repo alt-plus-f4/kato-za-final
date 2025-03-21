@@ -37,8 +37,6 @@ export async function GET(request: Request) {
 			},
 		});
 
-		console.log('User data:', user);
-
 		if (!user || !user.piggyBank || !user.Goal) {
 			console.log('No real data found, returning test data');
 			return NextResponse.json(TEST_DATA);
