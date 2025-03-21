@@ -30,7 +30,7 @@ export default async function Header() {
 					Features
 				</Link>
 				<Link
-					href='#'
+					href='#about'
 					className='text-sm font-medium hover:underline underline-offset-4'
 				>
 					About

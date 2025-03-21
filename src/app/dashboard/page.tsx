@@ -14,6 +14,8 @@ import Link from 'next/link';
 import { PiggyBank } from '@/components/PiggyBank';
 import fetchUserPiggybanks from '@/lib/fetch-user-piggybanks';
 import { getAuthSession } from '@/lib/auth';
+import CurrencyConverter from '@/components/CurrencyConverter';
+import CurrencyHistoryChart from '@/components/CurrencyHistoryChart';
 
 export default async function SavingsTracker() {
 	const session = await getAuthSession();
@@ -120,6 +122,9 @@ export default async function SavingsTracker() {
 					>
 						<PiggyBank initialData={piggybanks} />
 					</Suspense>
+
+					<CurrencyConverter />
+					<CurrencyHistoryChart />
 				</>
 			)}
 		</div>
