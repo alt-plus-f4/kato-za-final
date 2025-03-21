@@ -8,12 +8,12 @@ export default async function Header() {
 	const session = await getAuthSession();
 
 	return (
-		<header className='px-4 lg:px-6 h-16 flex items-center justify-between border-b'>
+		<header className='px-4 lg:px-6 h-16 flex items-center justify-between border-b '>
 			<div className='flex items-center gap-2 font-bold text-xl'>
 				<Coins className='h-6 w-6 text-primary' />
 				<span>PiggyBank</span>
 			</div>
-			<nav className='flex gap-4 sm:gap-6'>
+			<nav className='flex gap-4 sm:gap-6 items-center'>
 				<Link
 					href='/dashboard'
 					className='text-sm font-medium hover:underline underline-offset-4'

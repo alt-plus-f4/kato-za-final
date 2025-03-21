@@ -16,13 +16,24 @@ export const authOptions: NextAuthOptions = {
 				password: {},
 			},
 			async authorize(credentials) {
+				console.log(credentials);
+
 				if (!credentials?.email || !credentials.password) {
+					console.log('asd');
 					return null;
 				}
+				console.log('asd2');
 
-				let user = await db.user.findUnique({
-					where: { email: credentials.email },
-				});
+				let user;
+				try {
+					user = await db.user.findUnique({
+						where: { email: credentials.email },
+					});
+					console.log('asd3');
+				} catch (error) {
+					console.error('Error while finding user:', error);
+					return null;
+				}
 
 				if (user) {
 					if (user.password === credentials.password) {
@@ -31,12 +42,17 @@ export const authOptions: NextAuthOptions = {
 					return null;
 				}
 
-				user = await db.user.create({
-					data: {
-						email: credentials.email,
-						password: credentials.password,
-					},
-				});
+				try {
+					user = await db.user.create({
+						data: {
+							email: credentials.email,
+							password: credentials.password,
+						},
+					});
+				} catch (error) {
+					console.error('Error while creating user:', error);
+					return null;
+				}
 
 				return user;
 			},
