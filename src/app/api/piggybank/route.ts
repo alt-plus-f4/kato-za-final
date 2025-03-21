@@ -25,7 +25,7 @@ export async function POST(request: Request) {
 
 		const goal = await db.goal.create({
 			data: {
-				userId: session.user.id,
+				userId: session.user.id || '',
 				name: 'New Goal',
 				price: 0,
 			},
@@ -37,7 +37,7 @@ export async function POST(request: Request) {
 				goalId: goal.id,
 				User: {
 					connect: {
-						id: session.user.id,
+						id: session.user.id || '',
 					},
 				},
 			},
