@@ -9,10 +9,13 @@ export default async function Header() {
 
 	return (
 		<header className='px-4 lg:px-6 h-16 flex items-center justify-between border-b '>
-			<div className='flex items-center gap-2 font-bold text-xl'>
+			<Link
+				href='/'
+				className='flex flex-row items-center gap-2 font-bold text-xl hover:text-gray-700 transition-colors'
+			>
 				<Coins className='h-6 w-6 text-primary' />
 				<span>PiggyBank</span>
-			</div>
+			</Link>
 			<nav className='flex gap-4 sm:gap-6 items-center'>
 				<Link
 					href='/dashboard'
