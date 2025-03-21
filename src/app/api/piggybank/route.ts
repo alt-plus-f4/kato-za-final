@@ -51,7 +51,7 @@ export async function POST(request: Request) {
 	}
 }
 
-let testBalance = 650;
+let testBalance = 0;
 
 export async function PATCH(request: Request) {
 	try {

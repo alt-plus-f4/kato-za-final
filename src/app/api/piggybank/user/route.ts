@@ -1,22 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
-const TEST_DATA = {
-	piggyBank: {
-		id: 999,
-		money: 650,
-		goalId: 999,
-	},
-	goal: {
-		id: 999,
-		userId: 999,
-		name: 'Dream Vacation',
-		description: 'Trip to Bali in summer 2024',
-		price: 1000,
-		picture: null,
-	},
-};
-
 export async function GET(request: Request) {
 	try {
 		// Parse userId from query parameters
@@ -39,7 +23,7 @@ export async function GET(request: Request) {
 
 		if (!user || !user.piggyBank || !user.Goal) {
 			console.log('No real data found, returning test data');
-			return NextResponse.json(TEST_DATA);
+			return NextResponse.error();
 		}
 
 		return NextResponse.json({
@@ -49,6 +33,6 @@ export async function GET(request: Request) {
 	} catch (error) {
 		console.error('Error fetching piggy bank:', error);
 		console.log('Error occurred, returning test data');
-		return NextResponse.json(TEST_DATA);
+		return NextResponse.error();
 	}
 }
