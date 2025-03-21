@@ -3,7 +3,7 @@ import { db } from '@/lib/db';
 
 //! For demo purposes, we'll use a hardcoded user ID
 //! In a real app, you would get this from the authenticated user session
-const CURRENT_USER_ID = 1;
+const CURRENT_USER_ID = '1';
 
 const TEST_DATA = {
 	piggyBank: {

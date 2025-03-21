@@ -6,32 +6,6 @@ export default function LandingPage() {
 	return (
 		<div className='flex flex-col min-h-screen'>
 			{/* Navigation */}
-			<header className='px-4 lg:px-6 h-16 flex items-center justify-between border-b'>
-				<div className='flex items-center gap-2 font-bold text-xl'>
-					<Coins className='h-6 w-6 text-primary' />
-					<span>PiggyBank</span>
-				</div>
-				<nav className='flex gap-4 sm:gap-6'>
-					<Link
-						href='/dashboard'
-						className='text-sm font-medium hover:underline underline-offset-4'
-					>
-						Dashboard
-					</Link>
-					<Link
-						href='#features'
-						className='text-sm font-medium hover:underline underline-offset-4'
-					>
-						Features
-					</Link>
-					<Link
-						href='#'
-						className='text-sm font-medium hover:underline underline-offset-4'
-					>
-						About
-					</Link>
-				</nav>
-			</header>
 
 			{/* Hero Section */}
 			<section className='w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-gradient-to-b from-background to-muted'>
