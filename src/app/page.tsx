@@ -147,122 +147,16 @@ export default function LandingPage() {
 								The team behind PiggyBank
 							</h2>
 							<p className='max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed'>
-								We are a passionate team dedicated to helping
-								people achieve their financial goals through
-								smart saving.
+								MyPiggyBank is an innovative piggy bank that
+								combines a physical device and a mobile
+								application to provide a convenient and modern
+								way to manage savings. The user drops coins or
+								banknotes into the piggy bank, which
+								automatically recognizes and records the amount.
+								The data is then synchronized with a website,
+								allowing the user to monitor their available
+								funds in real time.
 							</p>
-						</div>
-					</div>
-
-					<div className='mx-auto grid max-w-5xl grid-cols-1 gap-8 md:grid-cols-2 lg:gap-12 mt-12'>
-						<div className='space-y-4'>
-							<h3 className='text-xl font-bold'>Our Mission</h3>
-							<p className='text-muted-foreground'>
-								At PiggyBank, we believe everyone should have
-								the tools to save for what matters most. Our
-								mission is to make saving money simple, visual,
-								and rewarding. We are committed to helping you
-								build better financial habits and achieve your
-								dreams faster.
-							</p>
-							<h3 className='text-xl font-bold mt-6'>
-								Our Story
-							</h3>
-							<p className='text-muted-foreground'>
-								PiggyBank started in 2023 when our founders
-								realized how difficult it was to stay motivated
-								while saving for big purchases. What began as a
-								simple progress tracker has evolved into a
-								comprehensive savings platform used by thousands
-								of people worldwide.
-							</p>
-						</div>
-
-						<div className='space-y-6'>
-							<div className='rounded-lg border bg-card p-6 shadow-sm'>
-								<div className='flex items-center gap-4'>
-									<div className='h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center'>
-										<span className='text-xl font-bold text-primary'>
-											JD
-										</span>
-									</div>
-									<div>
-										<h4 className='text-lg font-semibold'>
-											Jane Doe
-										</h4>
-										<p className='text-sm text-muted-foreground'>
-											Co-founder & CEO
-										</p>
-									</div>
-								</div>
-								<p className='mt-4 text-muted-foreground'>
-									&quot;We created PiggyBank to solve our own
-									frustrations with saving. Now we are helping
-									thousands of users achieve their financial
-									goals.&quot;
-								</p>
-							</div>
-
-							<div className='rounded-lg border bg-card p-6 shadow-sm'>
-								<div className='flex items-center gap-4'>
-									<div className='h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center'>
-										<span className='text-xl font-bold text-primary'>
-											JS
-										</span>
-									</div>
-									<div>
-										<h4 className='text-lg font-semibold'>
-											John Smith
-										</h4>
-										<p className='text-sm text-muted-foreground'>
-											Co-founder & CTO
-										</p>
-									</div>
-								</div>
-								<p className='mt-4 text-muted-foreground'>
-									&quot;Our focus has always been on creating
-									a simple, visual way to track progress.
-									Seeing your savings grow is incredibly
-									motivating.&quot;
-								</p>
-							</div>
-						</div>
-					</div>
-
-					<div className='mt-16 flex flex-col items-center justify-center space-y-4'>
-						<div className='grid grid-cols-2 md:grid-cols-4 gap-8 text-center'>
-							<div>
-								<h3 className='text-3xl font-bold text-primary'>
-									10k+
-								</h3>
-								<p className='text-muted-foreground'>
-									Active Users
-								</p>
-							</div>
-							<div>
-								<h3 className='text-3xl font-bold text-primary'>
-									$2M+
-								</h3>
-								<p className='text-muted-foreground'>
-									Saved by Users
-								</p>
-							</div>
-							<div>
-								<h3 className='text-3xl font-bold text-primary'>
-									15+
-								</h3>
-								<p className='text-muted-foreground'>
-									Team Members
-								</p>
-							</div>
-							<div>
-								<h3 className='text-3xl font-bold text-primary'>
-									4.8/5
-								</h3>
-								<p className='text-muted-foreground'>
-									User Rating
-								</p>
-							</div>
 						</div>
 					</div>
 				</div>

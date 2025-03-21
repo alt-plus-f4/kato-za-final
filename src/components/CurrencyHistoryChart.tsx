@@ -1,7 +1,24 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import {
+	Card,
+	CardHeader,
+	CardTitle,
+	CardDescription,
+	CardContent,
+	CardFooter,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+} from '@/components/ui/select';
+import {
+	ResponsiveContainer,
 	LineChart,
 	Line,
 	XAxis,
@@ -9,6 +26,7 @@ import {
 	CartesianGrid,
 	Tooltip,
 	Legend,
+	Brush,
 } from 'recharts';
 
 const CurrencyHistoryChart = () => {
@@ -19,6 +37,8 @@ const CurrencyHistoryChart = () => {
 	const [data, setData] = useState<{ t: number; c: number }[]>([]);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	// Simple cache: key is "from-to-days"
+	const cacheRef = useRef<Record<string, { t: number; c: number }[]>>({});
 
 	useEffect(() => {
 		const fetchCurrencies = async () => {
@@ -33,7 +53,8 @@ const CurrencyHistoryChart = () => {
 				}
 
 				setCurrencies(result.symbols);
-			} catch (error) {
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			} catch (error: any) {
 				console.error('Failed to fetch currencies:', error);
 				setError('Failed to fetch currencies. Please try again.');
 			}
@@ -45,6 +66,12 @@ const CurrencyHistoryChart = () => {
 	useEffect(() => {
 		const fetchData = async () => {
 			if (!from || !to) return;
+
+			const cacheKey = `${from}-${to}-${days}`;
+			if (cacheRef.current[cacheKey]) {
+				setData(cacheRef.current[cacheKey]);
+				return;
+			}
 
 			setLoading(true);
 			setError(null);
@@ -62,7 +89,10 @@ const CurrencyHistoryChart = () => {
 				}
 
 				setData(result);
-			} catch (error) {
+				// Cache the response
+				cacheRef.current[cacheKey] = result;
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			} catch (error: any) {
 				console.error('Failed to fetch historical data:', error);
 				setError('Failed to fetch historical data. Please try again.');
 			} finally {
@@ -73,92 +103,106 @@ const CurrencyHistoryChart = () => {
 		fetchData();
 	}, [from, to, days]);
 
+	// Format epoch timestamp into locale format
+	const formatDate = (timestamp: number) =>
+		new Date(timestamp).toLocaleDateString();
+
 	return (
-		<div className='p-6 bg-gray-100 rounded-lg'>
-			<h1 className='text-2xl font-bold mb-4'>Currency History</h1>
-			<div className='space-y-4'>
-				<div className='flex gap-4'>
+		<Card className='mt-8'>
+			<CardHeader>
+				<CardTitle>Currency History</CardTitle>
+				<CardDescription>
+					View historical currency data over time
+				</CardDescription>
+			</CardHeader>
+			<CardContent className='space-y-4'>
+				<div className='flex flex-col gap-4 md:flex-row'>
 					<div className='flex-1'>
-						<label className='block text-sm font-medium mb-1'>
-							From
-						</label>
-						<select
+						<Label htmlFor='from'>From</Label>
+						<Select
 							value={from}
-							onChange={(e) => setFrom(e.target.value)}
-							className='w-full p-2 border rounded-lg'
+							onValueChange={(val) => setFrom(val)}
 						>
-							<option value='' disabled>
-								Select currency
-							</option>
-							{Object.entries(currencies).map(([code, name]) => (
-								<option key={code} value={code}>
-									{code} - {name}
-								</option>
-							))}
-						</select>
+							<SelectTrigger className='w-full'>
+								{from.toUpperCase()}
+							</SelectTrigger>
+							<SelectContent>
+								{Object.entries(currencies).map(
+									([code, name]) => (
+										<SelectItem key={code} value={code}>
+											{code.toUpperCase()} - {name}
+										</SelectItem>
+									)
+								)}
+							</SelectContent>
+						</Select>
 					</div>
 					<div className='flex-1'>
-						<label className='block text-sm font-medium mb-1'>
-							To
-						</label>
-						<select
-							value={to}
-							onChange={(e) => setTo(e.target.value)}
-							className='w-full p-2 border rounded-lg'
-						>
-							<option value='' disabled>
-								Select currency
-							</option>
-							{Object.entries(currencies).map(([code, name]) => (
-								<option key={code} value={code}>
-									{code} - {name}
-								</option>
-							))}
-						</select>
+						<Label htmlFor='to'>To</Label>
+						<Select value={to} onValueChange={(val) => setTo(val)}>
+							<SelectTrigger className='w-full'>
+								{to.toUpperCase()}
+							</SelectTrigger>
+							<SelectContent>
+								{Object.entries(currencies).map(
+									([code, name]) => (
+										<SelectItem key={code} value={code}>
+											{code.toUpperCase()} - {name}
+										</SelectItem>
+									)
+								)}
+							</SelectContent>
+						</Select>
 					</div>
 					<div className='flex-1'>
-						<label className='block text-sm font-medium mb-1'>
-							Days
-						</label>
-						<input
+						<Label htmlFor='days'>Days</Label>
+						<Input
+							id='days'
 							type='number'
 							value={days}
 							onChange={(e) => setDays(Number(e.target.value))}
-							className='w-full p-2 border rounded-lg'
 							min='1'
 							max='365'
 						/>
 					</div>
 				</div>
-
 				{loading && <div className='text-center'>Loading...</div>}
-
 				{error && (
-					<div className='text-red-600 text-center'>{error}</div>
+					<div className='text-center text-red-600'>{error}</div>
 				)}
-
 				{!loading && !error && data.length > 0 && (
-					<LineChart
-						width={800}
-						height={400}
-						data={data}
-						margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-					>
-						<CartesianGrid strokeDasharray='3 3' />
-						<XAxis
-							dataKey='t'
-							tickFormatter={(timestamp) =>
-								new Date(timestamp).toLocaleDateString()
-							}
-						/>
-						<YAxis />
-						<Tooltip />
-						<Legend />
-						<Line type='monotone' dataKey='c' stroke='#8884d8' />
-					</LineChart>
+					<ResponsiveContainer width='100%' height={400}>
+						<LineChart
+							data={data}
+							margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+						>
+							<CartesianGrid strokeDasharray='3 3' />
+							<XAxis dataKey='t' tickFormatter={formatDate} />
+							<YAxis />
+							<Tooltip labelFormatter={formatDate} />
+							<Legend />
+							<Line
+								type='monotone'
+								dataKey='c'
+								stroke='#8884d8'
+							/>
+							{/* Brush allows zoom functionality */}
+							<Brush
+								dataKey='t'
+								height={30}
+								stroke='#8884d8'
+								tickFormatter={formatDate}
+							/>
+						</LineChart>
+					</ResponsiveContainer>
 				)}
-			</div>
-		</div>
+			</CardContent>
+			<CardFooter>
+				<div className='text-sm text-muted-foreground'>
+					Data for the past {days} days.
+				</div>
+			</CardFooter>
+		</Card>
 	);
 };
 

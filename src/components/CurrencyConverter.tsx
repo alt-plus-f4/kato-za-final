@@ -1,12 +1,33 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, SetStateAction } from 'react';
+import {
+	Card,
+	CardHeader,
+	CardTitle,
+	CardDescription,
+	CardContent,
+	CardFooter,
+} from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import {
+	Select,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+} from '@/components/ui/select';
 
-const CurrencyConverter = () => {
+interface CurrencyConverterProps {
+	money: number;
+}
+
+const CurrencyConverter = ({ money }: CurrencyConverterProps) => {
 	const [currencies, setCurrencies] = useState<Record<string, string>>({});
 	const [from, setFrom] = useState('');
 	const [to, setTo] = useState('');
-	const [amount, setAmount] = useState('');
+	const [amount, setAmount] = useState(money.toString());
 	const [result, setResult] = useState<number | null>(null);
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
@@ -16,14 +37,22 @@ const CurrencyConverter = () => {
 			try {
 				const response = await fetch('/api/fetchCurrencies');
 				const data = await response.json();
+
 				if (!response.ok)
 					throw new Error(data.error || 'Failed to fetch currencies');
+
+				console.log('SYMBOL' + data.symbols);
+
 				setCurrencies(data.symbols);
-				setFrom(Object.keys(data.symbols)[0] || 'EUR');
-				setTo(Object.keys(data.symbols)[1] || 'USD');
-			} catch (error) {
+
+				setFrom('USD');
+				setTo('EUR');
+
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+			} catch (error: any) {
 				setError(
-					'Failed to fetch currencies. Please try again.' + error
+					'Failed to fetch currencies. Please try again. ' +
+						error.message
 				);
 			}
 		};
@@ -46,74 +75,90 @@ const CurrencyConverter = () => {
 			if (!response.ok)
 				throw new Error(data.error || 'Failed to convert currency');
 			setResult(data.convertedAmount);
-		} catch (error) {
-			setError('Failed to convert currency. Please try again.' + error);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			setError(
+				'Failed to convert currency. Please try again. ' + error.message
+			);
 		} finally {
 			setLoading(false);
 		}
 	};
 
 	return (
-		<div className='p-6 bg-gray-100 rounded-lg'>
-			<h1 className='text-2xl font-bold mb-4'>Currency Converter</h1>
-			<div className='space-y-4'>
+		<Card className='mt-8'>
+			<CardHeader>
+				<CardTitle>Currency Converter</CardTitle>
+				<CardDescription>Convert currencies easily</CardDescription>
+			</CardHeader>
+			<CardContent className='space-y-4'>
 				<div>
-					<label className='block text-sm font-medium mb-1'>
-						From
-					</label>
-					<select
+					<Label htmlFor='from'>From</Label>
+					<Select
 						value={from}
-						onChange={(e) => setFrom(e.target.value)}
-						className='w-full p-2 border rounded-lg'
+						onValueChange={(val: SetStateAction<string>) =>
+							setFrom(val)
+						}
 					>
-						{Object.entries(currencies).map(([code, name]) => (
-							<option key={code} value={code}>
-								{code.toUpperCase()} - {name}
-							</option>
-						))}
-					</select>
+						<SelectTrigger className='w-full'>
+							{from.toUpperCase()}
+						</SelectTrigger>
+						<SelectContent>
+							{Object.entries(currencies).map(([code, name]) => (
+								<SelectItem key={code} value={code}>
+									{code.toUpperCase()} - {name}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
 				<div>
-					<label className='block text-sm font-medium mb-1'>To</label>
-					<select
+					<Label htmlFor='to'>To</Label>
+					<Select
 						value={to}
-						onChange={(e) => setTo(e.target.value)}
-						className='w-full p-2 border rounded-lg'
+						onValueChange={(val: SetStateAction<string>) =>
+							setTo(val)
+						}
 					>
-						{Object.entries(currencies).map(([code, name]) => (
-							<option key={code} value={code}>
-								{code.toUpperCase()} - {name}
-							</option>
-						))}
-					</select>
+						<SelectTrigger className='w-full'>
+							{to.toUpperCase()}
+						</SelectTrigger>
+						<SelectContent>
+							{Object.entries(currencies).map(([code, name]) => (
+								<SelectItem key={code} value={code}>
+									{code.toUpperCase()} - {name}
+								</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 				</div>
 				<div>
-					<label className='block text-sm font-medium mb-1'>
-						Amount
-					</label>
-					<input
+					<Label htmlFor='amount'>Amount</Label>
+					<Input
+						id='amount'
 						type='number'
 						value={amount}
 						onChange={(e) => setAmount(e.target.value)}
-						className='w-full p-2 border rounded-lg'
 						placeholder='e.g., 100'
 					/>
 				</div>
-				<button
-					onClick={handleConvert}
-					disabled={loading}
-					className='w-full p-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'
-				>
-					{loading ? 'Converting...' : 'Convert'}
-				</button>
-				{error && <div className='mt-4 text-red-600'>{error}</div>}
+				{error && <div className='text-red-600'>{error}</div>}
 				{result !== null && (
-					<div className='mt-4 text-lg font-semibold'>
+					<div className='text-lg font-semibold'>
 						Converted Amount: {result.toFixed(2)} {to.toUpperCase()}
 					</div>
 				)}
-			</div>
-		</div>
+			</CardContent>
+			<CardFooter>
+				<Button
+					onClick={handleConvert}
+					disabled={loading}
+					className='w-full'
+				>
+					{loading ? 'Converting...' : 'Convert'}
+				</Button>
+			</CardFooter>
+		</Card>
 	);
 };
 

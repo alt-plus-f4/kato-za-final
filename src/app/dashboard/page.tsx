@@ -103,7 +103,9 @@ export default async function SavingsTracker() {
 						<h1 className='text-3xl font-bold'>Savings Tracker</h1>
 						<div className='flex gap-2'>
 							<Button variant='outline' size='sm' asChild>
-								<Link href='/dashboard/add-goal'>
+								<Link
+									href={`/dashboard/add-goal?piggyBankId=${piggybanks.piggyBank.id}`}
+								>
 									<Target className='mr-2 h-4 w-4' />
 									Update Goal
 								</Link>
@@ -123,7 +125,9 @@ export default async function SavingsTracker() {
 						<PiggyBank initialData={piggybanks} />
 					</Suspense>
 
-					<CurrencyConverter />
+					<CurrencyConverter
+						money={piggybanks.piggyBank.money || 0}
+					/>
 					<CurrencyHistoryChart />
 				</>
 			)}

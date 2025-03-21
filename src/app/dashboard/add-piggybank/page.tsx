@@ -61,7 +61,6 @@ export default function AddPiggyBank() {
 				description: `Your new piggy bank has been created with $${initialAmount}`,
 			});
 
-			// Redirect to add goal page with the new piggy bank ID
 			router.push(`/dashboard/add-goal?piggyBankId=${data.id}`);
 		} catch (error) {
 			console.error('Error creating piggy bank:', error);
