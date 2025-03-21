@@ -39,7 +39,7 @@ export default function AddPiggyBank() {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch('/api/piggybank/create', {
+			const response = await fetch('/api/piggybank', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -77,7 +77,7 @@ export default function AddPiggyBank() {
 	};
 
 	return (
-		<div className='container max-w-md mx-auto py-10'>
+		<div className='container max-w-md m-auto py-10'>
 			<Link
 				href='/dashboard'
 				className='inline-flex items-center text-sm text-primary hover:text-primary/90 mb-6'
@@ -120,15 +120,20 @@ export default function AddPiggyBank() {
 							</p>
 						</div>
 					</CardContent>
-					<CardFooter className='flex justify-between'>
+					<CardFooter className='flex justify-between mt-2'>
 						<Button
 							variant='outline'
 							type='button'
 							onClick={() => router.push('/dashboard')}
+							className='cursor-pointer'
 						>
 							Cancel
 						</Button>
-						<Button type='submit' disabled={isLoading}>
+						<Button
+							type='submit'
+							disabled={isLoading}
+							className='cursor-pointer'
+						>
 							{isLoading ? (
 								<>
 									<Loader2 className='mr-2 h-4 w-4 animate-spin' />

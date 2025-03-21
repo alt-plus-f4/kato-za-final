@@ -22,6 +22,13 @@ export const authOptions: NextAuthOptions = {
 				try {
 					user = await db.user.findUnique({
 						where: { email: credentials.email },
+						select: {
+							id: true,
+							name: true,
+							email: true,
+							password: true,
+							image: true,
+						},
 					});
 				} catch (error) {
 					console.log('Error while finding user:', error);
@@ -52,17 +59,23 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async jwt({ token, user }) {
 			if (user) {
+				token.id = user.id;
 				token.name = user.name;
 				token.picture = user.image;
 				token.email = user.email;
 			}
+
 			return token;
 		},
 		async session({ session, token }) {
-			if (session.user) {
-				session.user.name = token.name as string;
-				session.user.image = token.picture as string;
-				session.user.email = token.email as string;
+			console.log('SESSION CALLBACK', { session, token });
+			if (token) {
+				session.user = {
+					id: (token.id as string) || '',
+					name: (token.name as string) || '',
+					email: token.email || '',
+					image: token.picture || '',
+				};
 			}
 			return session;
 		},
