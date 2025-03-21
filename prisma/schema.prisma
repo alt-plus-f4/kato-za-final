@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Account {
-  userId            String  @db.Uuid
+  userId            String
   type              String
   provider          String
   providerAccountId String
@@ -30,7 +30,7 @@ model Account {
 
 model Session {
   sessionToken String   @unique
-  userId       String   @db.Uuid
+  userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -39,7 +39,7 @@ model Session {
 }
 
 model User {
-  id       String  @id @default(uuid()) @map("id") @db.Uuid
+  id       String  @id @default(cuid())
   name     String? @unique
   email    String  @unique
   password String
@@ -66,7 +66,7 @@ model PiggyBank {
 model Goal {
   id Int @id @unique @default(autoincrement())
 
-  userId         String          @unique @db.Uuid
+  userId         String          @unique
   name           String
   description    String?
   price          Float           @default(0)

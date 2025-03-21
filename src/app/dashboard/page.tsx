@@ -1,4 +1,3 @@
-import { getServerSession } from 'next-auth/next';
 import { redirect } from 'next/navigation';
 import { Suspense } from 'react';
 import {
@@ -14,9 +13,10 @@ import { Coins, Target, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { PiggyBank } from '@/components/PiggyBank';
 import fetchUserPiggybanks from '@/lib/fetch-user-piggybanks';
+import { getAuthSession } from '@/lib/auth';
 
 export default async function SavingsTracker() {
-	const session = await getServerSession();
+	const session = await getAuthSession();
 
 	console.log(JSON.stringify(session));
 
