@@ -3,6 +3,7 @@
 import React from 'react'
 import { useActionState } from 'react';
 import { login } from '../actions/userController';
+import Search from '../components/Search';
 
 
 const page = () => {
