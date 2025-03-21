@@ -55,13 +55,13 @@ let testBalance = 0;
 
 export async function PATCH(request: Request) {
 	try {
-		const session = await getAuthSession();
-		if (!session || !session.user) {
-			return NextResponse.json(
-				{ message: 'Unauthorized' },
-				{ status: 401 }
-			);
-		}
+		// const session = await getAuthSession();
+		// if (!session || !session.user) {
+		// 	return NextResponse.json(
+		// 		{ message: 'Unauthorized' },
+		// 		{ status: 401 }
+		// 	);
+		// }
 
 		const { amount, type, piggyBankId } = await request.json();
 

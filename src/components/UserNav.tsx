@@ -14,6 +14,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Settings, Users } from 'lucide-react';
 import SignOut from './SignOut';
+import Image from 'next/image';
 
 interface UserNavProps {
 	user: {
@@ -35,7 +36,14 @@ export function UserNav(UserNavProps: UserNavProps) {
 				>
 					<Avatar className='h-8 w-8'>
 						<AvatarImage src={user.image ?? ''} alt='image' />
-						<AvatarFallback>CN</AvatarFallback>
+						<AvatarFallback>
+							<Image
+								src='https://6q0iedxcfemxlbr8.public.blob.vercel-storage.com/avatars/image-avatar-avatar-fallback-aqe7YOpWnJZHFpWfZTD8WvUfaEhkSJ.svg'
+								alt='avatar fallback'
+								width={32}
+								height={32}
+							/>
+						</AvatarFallback>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>

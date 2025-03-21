@@ -3,6 +3,48 @@ import { db } from '@/lib/db';
 import { uploadImage } from '@/lib/uploadImage';
 import { getAuthSession } from '@/lib/auth';
 
+export async function GET(request: Request) {
+	try {
+		const { searchParams } = new URL(request.url);
+		const piggyBankId = parseInt(searchParams.get('piggyBankId') || '');
+
+		if (!piggyBankId) {
+			return NextResponse.json(
+				{ message: 'Piggy bank ID is required' },
+				{ status: 400 }
+			);
+		}
+
+		const piggyBank = await db.piggyBank.findUnique({
+			where: { id: piggyBankId },
+			include: {
+				goal: {
+					select: {
+						name: true,
+						id: true,
+						price: true,
+					},
+				},
+			},
+		});
+
+		if (!piggyBank || !piggyBank.goal) {
+			return NextResponse.json(
+				{ message: 'Goal not found' },
+				{ status: 404 }
+			);
+		}
+
+		return NextResponse.json(piggyBank.goal);
+	} catch (error) {
+		console.error('Error fetching goal:', error);
+		return NextResponse.json(
+			{ message: 'Failed to fetch goal' },
+			{ status: 500 }
+		);
+	}
+}
+
 export async function POST(request: Request) {
 	try {
 		const session = await getAuthSession();
