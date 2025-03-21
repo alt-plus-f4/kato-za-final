@@ -46,6 +46,7 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 	);
 	const [isUpdatingFunds, setIsUpdatingFunds] = useState(false);
 
+	// Handle updating money in piggy bank
 	const updateBalance = async (type: 'add' | 'remove') => {
 		if (amount <= 0) {
 			toast.error('Invalid amount', {
@@ -68,7 +69,11 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({ amount, type }),
+				body: JSON.stringify({
+					amount,
+					type,
+					piggyBankId: initialData.piggyBank.id,
+				}),
 			});
 
 			if (!response.ok) {
@@ -78,6 +83,7 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 			const data = await response.json();
 			setBalance(data.updatedBalance);
 
+			// Update progress
 			if (goal && goal.price > 0) {
 				const progressValue = Math.min(
 					(data.updatedBalance / goal.price) * 100,
@@ -103,6 +109,7 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 		}
 	};
 
+	// Format currency
 	const formatCurrency = (value: number) => {
 		return new Intl.NumberFormat('en-US', {
 			style: 'currency',
@@ -185,9 +192,9 @@ export function PiggyBank({ initialData }: PiggyBankProps) {
 								<Image
 									src={goal.picture}
 									alt={goal.name}
+									className='w-full h-full object-contain'
 									width={200}
 									height={200}
-									className='w-full h-full object-contain'
 								/>
 							) : (
 								<div className='w-full h-full flex items-center justify-center text-muted-foreground'>

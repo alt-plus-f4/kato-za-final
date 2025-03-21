@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
 import { db } from '@/lib/db';
 import { uploadImage } from '@/lib/uploadImage';
+import { getAuthSession } from '@/lib/auth';
 
 export async function POST(request: Request) {
 	try {
-		const session = await getServerSession();
+		const session = await getAuthSession();
 		if (!session || !session.user) {
 			return NextResponse.json(
 				{ message: 'Unauthorized' },
