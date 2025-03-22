@@ -48,6 +48,8 @@ model User {
   piggyBankId Int?       @unique
   piggyBank   PiggyBank? @relation(fields: [piggyBankId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   Goal        Goal?
+  
+  demoPortfolio DemoPortfolio?
 
   Account Account[]
   Session Session[]
@@ -87,4 +89,25 @@ model PiggyBankGoal {
   goal      Goal      @relation(fields: [goalId], references: [id], onDelete: Cascade)
 
   @@unique([piggyBankId, goalId])
+}
+
+model DemoPortfolio {
+  userId       String  @id
+  demo_balance Float   @default(0)
+  assets       Asset[]
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Asset {
+  id            Int     @id @default(autoincrement())
+  demoPortfolioId String
+  name          String
+  bought_at     DateTime
+  price_bought  Int
+  sold_at       DateTime?
+  price_sold    Int?    @default(0)
+  active        Boolean @default(true)
+
+  demoPortfolio DemoPortfolio @relation(fields: [demoPortfolioId], references: [userId], onDelete: Cascade)
 }
